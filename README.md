@@ -13,8 +13,8 @@ The purpose in sharing this code is the hope that it may help another team with 
 *(Unfinished)*
 
 
-##Acknowledgements
-* Thanks to Aron Granberg for his Unity3D friendly build of JsonFX: https://bitbucket.org/TowerOfBricks/jsonfx-for-unity3d-git
+##Credits and Acknowledgements
+* Credit to Aron Granberg for his Unity3D-friendly build of JsonFX: https://bitbucket.org/TowerOfBricks/jsonfx-for-unity3d-git
 * Thanks to jsonfx for the original JsonFX: https://github.com/jsonfx/jsonfx
 
 ##License
