@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewZoneList", menuName = "ResourceList", order = 1)]
+[CreateAssetMenu(fileName = "NewZoneList", menuName = "ZoneList", order = 1)]
 [System.Serializable]
 public class ZoneList : ScriptableObject {
     /* This scriptable object is made to store a chunk of prefab references to be loaded whenever this object is loaded.
