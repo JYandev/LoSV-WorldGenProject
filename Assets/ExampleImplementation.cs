@@ -8,8 +8,7 @@ public class ExampleImplementation : MonoBehaviour {
      * When the Load World button is pressed, this script's currentWorldData will be filled with the deserialized JSON.
      */
 
-    [SerializeField] //Just to show in the inspector.
-    public WorldData currentWorldData;
+    private WorldData currentWorldData;
 
     #region --- [Button Event Receivers] ---
     public void OnButton_GenerateWorld () {
