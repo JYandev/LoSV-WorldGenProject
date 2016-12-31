@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fabf1d4465fd7384999413c3e8fdb7ce, type: 3}
   m_Name: Grasslands_Unique
   m_EditorClassIdentifier: 
-  referenceList:
+  zonePrefabList:
   - {fileID: 1703747551766758, guid: c9ee8925d9c66984ba86df1d3d931555, type: 2}

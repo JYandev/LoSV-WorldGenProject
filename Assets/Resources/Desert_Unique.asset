@@ -9,7 +9,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fabf1d4465fd7384999413c3e8fdb7ce, type: 3}
-  m_Name: Grasslands_Filler
+  m_Name: Desert_Unique
   m_EditorClassIdentifier: 
   zonePrefabList:
-  - {fileID: 1005105096222706, guid: b835ae2f43a20214380ef7d6dd25ebce, type: 2}
+  - {fileID: 1703747551766758, guid: b01c2d669408c4649b205d3395e608f1, type: 2}

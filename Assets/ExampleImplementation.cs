@@ -10,6 +10,10 @@ public class ExampleImplementation : MonoBehaviour {
 
     private WorldData currentWorldData;
 
+    // --- [Manually Set References] ---
+    [SerializeField]
+    private ZoneTypesList zoneTypesList;
+
     // --- [Cached Zone Prefab References] ---
     private ZoneList mandatoryZoneList;
     private ZoneList fillerZoneList;
