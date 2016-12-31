@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewZoneList", menuName = "ZoneList", order = 1)]
 [System.Serializable]
@@ -8,5 +9,5 @@ public class ZoneList : ScriptableObject {
      * We will also use our reference list as the container to iterate on when searching through all Possible zones for a ZoneType.
      */
 
-    public GameObject[] referenceList;
+    public Dictionary<string, List<GameObject>> referenceList; //Where key is ZoneType and List<GameObject> is the list of all prefab references belonging to this ZoneType.
 }

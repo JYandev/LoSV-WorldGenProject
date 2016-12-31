@@ -10,6 +10,12 @@ public class ExampleImplementation : MonoBehaviour {
 
     private WorldData currentWorldData;
 
+    // --- [Cached Zone Prefab References] ---
+    private ZoneList mandatoryZoneList;
+    private ZoneList fillerZoneList;
+    private ZoneList uniqueZoneList;
+    //
+
     #region --- [Button Event Receivers] ---
     public void OnButton_GenerateWorld () {
         throw new System.NotImplementedException();
