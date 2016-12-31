@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 65972043328334556}
   - component: {fileID: 23615572834235530}
   m_Layer: 0
-  m_Name: MandatoryZone_Grasslands
+  m_Name: MandatoryZone_Grasslands_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
