@@ -5,4 +5,5 @@ public class ZoneData {
      */
 
     public string z_Name; //Zone's Name
+    public ZoneType z_ZoneType;
 }
