@@ -10,11 +10,17 @@ public class WorldData {
 
     public List<ZoneData> w_Zones; //World Zone List
 
-    public void Generate (ZoneTypesList zoneTypes, int length = 100, int width = 100) {
+    public void Generate (ZoneTypesList zoneTypes, int length = 10, int width = 10) {
         /* Generates a new world and fills the w_Zones property.
          */
 
         ZoneData[,] newWorldZones = new ZoneData[length, width]; //Create a 2D Array of blank zones.
-        throw new System.NotImplementedException();
+        for (int yIndex = 0; yIndex < width; yIndex++) {
+            for (int xIndex = 0; xIndex < length; xIndex++) {
+                newWorldZones[yIndex, xIndex] = new ZoneData();
+                newWorldZones[yIndex, xIndex].z_ZoneType = new ZoneType(); //This is automatically set to unspecified.
+            }
+        }
+
     }
 }

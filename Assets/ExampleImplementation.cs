@@ -22,7 +22,7 @@ public class ExampleImplementation : MonoBehaviour {
 
     #region --- [Button Event Receivers] ---
     public void OnButton_GenerateWorld () {
-        throw new System.NotImplementedException();
+        GenerateWorld();
     }
     public void OnButton_LoadWorld () {
         throw new System.NotImplementedException();
@@ -34,6 +34,20 @@ public class ExampleImplementation : MonoBehaviour {
         /* Saves the currentWorldData to a file in Application.dataPath.
          */
         
+    }
+    #endregion
+
+    #region --- [Main Example Functionality] ---
+    private void GenerateWorld () {
+        WorldData newWorldData = new WorldData();
+        newWorldData.Generate(zoneTypesList);
+
+        currentWorldData = newWorldData;
+        DisplayWorld();
+    }
+
+    private void DisplayWorld () {
+        throw new System.NotImplementedException();
     }
     #endregion
 }

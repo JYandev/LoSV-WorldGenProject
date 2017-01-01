@@ -14,5 +14,5 @@ public class ZoneTypesList : ScriptableObject {
 [System.Serializable]
 public class ZoneType {
     public string name = "Unspecified"; //Unspecified by default. This is so that we can determine which zones have been iterated over during world-gen.
-    public float priority = 1.0; //ZoneType's Priority.
+    public float priority = 1.0f; //ZoneType's Priority.
 }
