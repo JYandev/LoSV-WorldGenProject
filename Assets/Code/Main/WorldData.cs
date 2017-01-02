@@ -11,7 +11,7 @@ public class WorldData {
 
     public List<ZoneData> w_Zones; //World Zone List
 
-    public void Generate (ZoneTypesList zoneTypes, int length = 10, int width = 10) {
+    public void Generate (ZoneTypesList zoneTypes, int length = 10, int width = 10) { //Make this an IEnumerator later --- (To Add)
         /* Generates a new world and fills the w_Zones property.
          */
 
@@ -29,6 +29,46 @@ public class WorldData {
             Vector2 chosenPoint = pickRandomUnchosenPoint(currentType.name, newWorldZones);
             newWorldZones[(int)chosenPoint.x, (int)chosenPoint.y].z_ZoneType = currentType;
         }
+
+        //Grow each zone type until no more moves can be made.
+        int zonesFinished = 0;
+        Vector2[] adjacentArray = new Vector2[8] { new Vector2(0, 1), new Vector2(0, -1), new Vector2(1, 0), new Vector2(1, 1), new Vector2(1, -1), new Vector2(-1, 0), new Vector2(-1, 1), new Vector2 (-1, -1) };
+        while (zonesFinished < length*width) {
+            for (int yIndex = 0; yIndex < width; yIndex++) {
+                for (int xIndex = 0; xIndex < length; xIndex++) {
+                    //For every zone in our newWorldZones array.
+                    if (newWorldZones[yIndex, xIndex].z_ZoneType.name != "Unspecified") { //If the zonetype has been set.
+                        //Check all adjacent tiles and spread to them with priority zoneType.Priority if possible.
+                        foreach (Vector2 adjacentTilePos in adjacentArray) {
+                            try {
+                                if (newWorldZones[(int)yIndex + (int)adjacentTilePos.x, (int)xIndex + (int)adjacentTilePos.y].setConversionPercentage(newWorldZones[yIndex, xIndex].z_ZoneType)) {
+                                    zonesFinished += 1;
+                                }
+                            }
+                            catch (System.IndexOutOfRangeException) {
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        //Apply a randomized cutting of zones at the edges of the world to create a continental look:
+        Debug.Log("Unimplemented");
+
+        //Assign MandatoryZones in their respective ZoneTypes, and if they do not exist, create them randomly.
+        Debug.Log("Unimplemented");
+
+        //Fill in the rest of the Zones with FillerZones or UniqueZones based on their ZoneType. Also assign their prefabIndex.
+        Debug.Log("Unimplemented");
+
+        //Finally, convert to a 1D list and update our own w_Zones:
+        List<ZoneData> processedZoneList = new List<ZoneData>();
+        foreach(ZoneData z in newWorldZones) {
+            processedZoneList.Add(z); //Perhaps check for empty, deleted zones? --- (To Add/Review)
+        }
+        w_Zones = processedZoneList;
     }
 
     #region --- [World-Gen Helpers] ---

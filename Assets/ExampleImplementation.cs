@@ -47,6 +47,7 @@ public class ExampleImplementation : MonoBehaviour {
     }
 
     private void DisplayWorld () {
+        Debug.Log(currentWorldData.w_Zones[5].z_ZoneType.name);
         throw new System.NotImplementedException();
     }
     #endregion
