@@ -13,8 +13,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zoneTypes:
   - name: Grasslands
-    priority: 1
+    priority: 0.5
   - name: Desert
-    priority: 1
+    priority: 0.4
   - name: Snowy Hills
-    priority: 1
+    priority: 0.4
