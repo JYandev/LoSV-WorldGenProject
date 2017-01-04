@@ -14,8 +14,7 @@ public class ZoneData {
     public ZoneFunction z_ZoneFunction;
     public Vector2 z_ZonePosition;
 
-    public ZoneData () {
-        //Init unimplemented]
+    public ZoneData () { //Init Function
         z_ZoneFunction = ZoneFunction.Unset;
     }
 

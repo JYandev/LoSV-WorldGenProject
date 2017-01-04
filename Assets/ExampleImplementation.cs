@@ -54,7 +54,7 @@ public class ExampleImplementation : MonoBehaviour {
     #region --- [Main Example Functionality] ---
     private void GenerateWorld () {
         WorldData newWorldData = new WorldData();
-        newWorldData.Generate(zoneTypesList, mandatoryZoneList, uniqueZoneList);
+        newWorldData.Generate(zoneTypesList, mandatoryZoneList, fillerZoneList, uniqueZoneList);
 
         currentWorldData = newWorldData;
         DisplayWorld();
@@ -63,9 +63,13 @@ public class ExampleImplementation : MonoBehaviour {
     private void DisplayWorld () {
         foreach (ZoneData zoneData in currentWorldData.w_Zones) {
             if (zoneData.z_ZoneFunction == ZoneFunction.Filler) {
-                Instantiate(fillerZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity); //Need a way to tell the difference between Mandatory, Unique, and Story zones.
+                Instantiate(fillerZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity);
+            }
+            else if (zoneData.z_ZoneFunction == ZoneFunction.Mandatory) {
+                Instantiate(mandatoryZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity);
             }
             else {
+                Debug.Log("Cannot currently display zones type of: " + zoneData.z_ZoneFunction);
                 Debug.Log("Other zones functions that that of Filler are currently Unimplemented!");
             }
         }
