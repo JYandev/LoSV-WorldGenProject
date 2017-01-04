@@ -66,7 +66,6 @@ public class WorldData {
         newWorldZones = applyContinentFilter(newWorldZones, 1, 0.5f);
 
         //Assign MandatoryZones in their respective ZoneTypes, and if they do not exist, create them randomly.
-        Debug.Log("Mandatory Zones Unimplemented");
         newWorldZones = assignMandatoryZones(newWorldZones, mandatoryZoneLibrary);
 
         //Fill in the rest of the Zones with FillerZones or UniqueZones based on their ZoneType while assigning their prefabIndex. Finally, convert to a 1D list and update our own w_Zones:
