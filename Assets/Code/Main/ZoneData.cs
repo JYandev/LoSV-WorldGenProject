@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public enum ZoneFunction { Filler, Mandatory, Unique}
+public enum ZoneFunction { Unset, Empty, Filler, Mandatory, Unique}
 
 [System.Serializable]
 public class ZoneData {
@@ -11,8 +11,13 @@ public class ZoneData {
 
     public ZoneType z_ZoneType; //Zone's Type represented by a string (We don't need the full class)
     public int z_ZonePrefabIndex; //The index of the prefab in a ZoneList representing the ZoneType from z_ZoneType.
-    public ZoneFunction z_ZoneFunction = ZoneFunction.Filler;
+    public ZoneFunction z_ZoneFunction;
     public Vector2 z_ZonePosition;
+
+    public ZoneData () {
+        //Init unimplemented]
+        z_ZoneFunction = ZoneFunction.Unset;
+    }
 
     #region --- [Private Functionality] ---
     //Stuff here is only needed for world-gen and is not saved in any save-data file.

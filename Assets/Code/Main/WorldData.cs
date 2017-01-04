@@ -63,7 +63,7 @@ public class WorldData {
         }
 
         //Apply a randomized cutting of zones at the edges of the world to create a continental look:
-        Debug.Log("Continent Filter Unimplemented");
+        newWorldZones = applyContinentFilter(newWorldZones, 1, 0.5f);
 
         //Assign MandatoryZones in their respective ZoneTypes, and if they do not exist, create them randomly.
         Debug.Log("Mandatory Zones Unimplemented");
@@ -74,10 +74,14 @@ public class WorldData {
         foreach (ZoneData z in newWorldZones) {
             Debug.Log(z.z_ZoneType.name);
             //If it is not a story zone, determine and set whether it is unique or filler --- (To Add)
-            if (z.z_ZoneFunction == ZoneFunction.Filler) {
+            if (z.z_ZoneFunction == ZoneFunction.Unset) {
+                //if filler
+                z.z_ZoneFunction = ZoneFunction.Filler;
                 if (fillerZoneLibrary.ContainsKey(z.z_ZoneType)) { //Exception may be found here --- (To Review/Foolproof)
                     z.z_ZonePrefabIndex = (int)Random.Range(0, fillerZoneLibrary[z.z_ZoneType].zonePrefabList.Count);
                 }
+                //else if unique
+
             }
             else {
                 //Not implemented
@@ -88,6 +92,30 @@ public class WorldData {
     }
 
     #region --- [World-Gen Helpers] ---
+    private ZoneData[,] applyContinentFilter (ZoneData[,] zdArray, int iterations, float strength) {
+        int currentIterations = 0;
+        ZoneData[,] newZDArray = zdArray;
+        while (currentIterations < iterations) {
+            List<Vector2> toFilter = new List<Vector2>();
+            for (int yIndex = 0; yIndex < newZDArray.GetLength(0)-currentIterations; yIndex++) {
+                for (int xIndex = 0; xIndex < newZDArray.GetLength(1)-currentIterations; xIndex++) {
+                    if (yIndex == currentIterations || xIndex == currentIterations || yIndex == newZDArray.GetLength(0)-currentIterations-1 || xIndex == newZDArray.GetLength(1)-currentIterations-1) {
+                        toFilter.Add(new Vector2(yIndex, xIndex));
+                    }
+                }
+            }
+            foreach (Vector2 zDataPos in toFilter) {
+                Debug.Log("Filtering " + zDataPos);
+                if (strength >= Random.value) {
+                    newZDArray[(int)zDataPos.x, (int)zDataPos.y].z_ZoneFunction = ZoneFunction.Empty;
+                }
+            }
+            currentIterations++;
+        }
+
+        return newZDArray;
+    }
+
     private Vector2 pickRandomUnchosenPoint (ZoneData[,] zones) {
         var chosen = false;
         Vector2 randomVector = Vector2.zero;
