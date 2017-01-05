@@ -68,9 +68,11 @@ public class ExampleImplementation : MonoBehaviour {
             else if (zoneData.z_ZoneFunction == ZoneFunction.Mandatory) {
                 Instantiate(mandatoryZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity);
             }
+            else if (zoneData.z_ZoneFunction == ZoneFunction.Unique) {
+                Instantiate(uniqueZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity);
+            }
             else {
-                Debug.Log("Cannot currently display zones type of: " + zoneData.z_ZoneFunction);
-                Debug.Log("Other zones functions that that of Filler are currently Unimplemented!");
+                Debug.Log("Cannot display zones type of: " + zoneData.z_ZoneFunction);
             }
         }
     }

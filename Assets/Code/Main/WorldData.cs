@@ -14,7 +14,7 @@ public class WorldData {
     public void Generate (ZoneTypesList zoneTypes, Dictionary<ZoneType, ZoneList> mandatoryZoneLibrary, Dictionary<ZoneType, ZoneList> fillerZoneLibrary, Dictionary<ZoneType, ZoneList> uniqueZoneLibrary, int length = 10, int width = 10) { //Make this an IEnumerator later --- (To Add)
         /* Generates a new world and fills the w_Zones property.
          */
-
+        float uniqueZoneChance = 0.75f; //Make this a function parameter later --- (To Add)
         // Create a 2D Array of blank zones:
         ZoneData[,] newWorldZones = new ZoneData[length, width];
         for (int yIndex = 0; yIndex < width; yIndex++) { //Replace this with default constructors --- (To Add/Review)
@@ -71,20 +71,51 @@ public class WorldData {
         //Fill in the rest of the Zones with FillerZones or UniqueZones based on their ZoneType while assigning their prefabIndex. Finally, convert to a 1D list and update our own w_Zones:
         Debug.Log("Only Filler Zone PrefabIndex Linking Implemented");
         List<ZoneData> processedZoneList = new List<ZoneData>();
+        Dictionary<ZoneType, List<int>> uniqueIndexPool = new Dictionary<ZoneType, List<int>>();
+        //Initialize our prefabIndex-by-zoneType pool:
+        foreach (ZoneType zt in uniqueZoneLibrary.Keys) {
+            List<int> newList = new List<int>();
+            for (int i = 0; i < uniqueZoneLibrary[zt].zonePrefabList.Count; i++) {
+                newList.Add(i);
+            }
+            uniqueIndexPool.Add(zt, newList);
+        }
         foreach (ZoneData z in newWorldZones) {
             Debug.Log(z.z_ZoneType.name);
             //If it is not a story zone, determine and set whether it is unique or filler --- (To Add)
             if (z.z_ZoneFunction == ZoneFunction.Unset) {
-                //if filler
-                z.z_ZoneFunction = ZoneFunction.Filler;
-                if (fillerZoneLibrary.ContainsKey(z.z_ZoneType)) { //Exception may be found here --- (To Review/Foolproof)
-                    z.z_ZonePrefabIndex = (int)Random.Range(0, fillerZoneLibrary[z.z_ZoneType].zonePrefabList.Count);
+                if (uniqueZoneLibrary.ContainsKey(z.z_ZoneType)) { //Exception may be found here --- (To Review/Foolproof)
+                    //Chance for a unique zone
+                    if (uniqueIndexPool[z.z_ZoneType].Count > 0) {
+                        if (Random.value >= 1 - uniqueZoneChance) {
+                            //UniqueZone()
+                            z.z_ZoneFunction = ZoneFunction.Unique;
+                            z.z_ZonePrefabIndex = (int)Random.Range(0, uniqueZoneLibrary[z.z_ZoneType].zonePrefabList.Count);
+                            uniqueIndexPool[z.z_ZoneType].Remove(z.z_ZonePrefabIndex);
+                        }
+                        else {
+                            //Filler zone()
+                            z.z_ZoneFunction = ZoneFunction.Filler;
+                            if (fillerZoneLibrary.ContainsKey(z.z_ZoneType)) { //Exception may be found here --- (To Review/Foolproof)
+                                z.z_ZonePrefabIndex = (int)Random.Range(0, fillerZoneLibrary[z.z_ZoneType].zonePrefabList.Count);
+                            }
+                        }
+                    }
+                    else {
+                        //Filler zone()
+                        z.z_ZoneFunction = ZoneFunction.Filler;
+                        if (fillerZoneLibrary.ContainsKey(z.z_ZoneType)) { //Exception may be found here --- (To Review/Foolproof)
+                            z.z_ZonePrefabIndex = (int)Random.Range(0, fillerZoneLibrary[z.z_ZoneType].zonePrefabList.Count);
+                        }
+                    }
                 }
-                //else if unique
-
-            }
-            else {
-                //Not implemented
+                else {
+                    //Filler zone()
+                    z.z_ZoneFunction = ZoneFunction.Filler;
+                    if (fillerZoneLibrary.ContainsKey(z.z_ZoneType)) { //Exception may be found here --- (To Review/Foolproof)
+                        z.z_ZonePrefabIndex = (int)Random.Range(0, fillerZoneLibrary[z.z_ZoneType].zonePrefabList.Count);
+                    }
+                }
             }
             processedZoneList.Add(z); //Perhaps check for empty, deleted zones? --- (To Add/Review)
         }
