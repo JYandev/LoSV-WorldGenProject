@@ -14,6 +14,7 @@ public class ZoneTypesList : ScriptableObject {
 [System.Serializable]
 public class ZoneType {
     /* This class is used during world gen to determine a zone's "Biome" type and how fast that type spreads to other zones during the world gen process.
+     * When comparing ZoneTypes - especially to check if they equal - compare instead the ZoneType.name.
      */
     public string name = "Unspecified"; //Unspecified by default. This is so that we can determine which zones have been iterated over during world-gen.
     public float priority = 0.5f; //ZoneType's Priority.
