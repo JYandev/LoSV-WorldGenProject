@@ -19,7 +19,7 @@ public class WorldData {
         ZoneData[,] newWorldZones = new ZoneData[length, width];
         for (int yIndex = 0; yIndex < width; yIndex++) {
             for (int xIndex = 0; xIndex < length; xIndex++) {
-                newWorldZones[yIndex, xIndex] = new ZoneData(xIndex, yIndex);
+                newWorldZones[yIndex, xIndex] = new ZoneData(new Vector2(xIndex, yIndex));
             }
         }
         
