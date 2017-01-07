@@ -17,11 +17,9 @@ public class WorldData {
         float uniqueZoneChance = 0.75f; //Make this a function parameter later --- (To Add)
         // Create a 2D Array of blank zones:
         ZoneData[,] newWorldZones = new ZoneData[length, width];
-        for (int yIndex = 0; yIndex < width; yIndex++) { //Replace this with default constructors --- (To Add/Review)
+        for (int yIndex = 0; yIndex < width; yIndex++) {
             for (int xIndex = 0; xIndex < length; xIndex++) {
-                newWorldZones[yIndex, xIndex] = new ZoneData();
-                newWorldZones[yIndex, xIndex].z_ZoneType = new ZoneType(); //This is automatically set to unspecified.
-                newWorldZones[yIndex, xIndex].z_ZonePosition = new Vector2(xIndex, yIndex);
+                newWorldZones[yIndex, xIndex] = new ZoneData(xIndex, yIndex);
             }
         }
         

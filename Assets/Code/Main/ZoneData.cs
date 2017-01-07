@@ -14,8 +14,10 @@ public class ZoneData {
     public ZoneFunction z_ZoneFunction;
     public Vector2 z_ZonePosition;
 
-    public ZoneData () { //Init Function
+    public ZoneData (Vector2 zonePos) {
+        z_ZonePosition = zonePos;
         z_ZoneFunction = ZoneFunction.Unset;
+        z_ZoneType = new ZoneType(); //This is automatically set to unspecified.
     }
 
     #region --- [Private Functionality] ---
