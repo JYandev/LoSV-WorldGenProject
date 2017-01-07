@@ -71,7 +71,7 @@ public class ExampleImplementation : MonoBehaviour {
                 Instantiate(uniqueZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity);
             }
             else {
-                Debug.Log("Cannot display zones type of: " + zoneData.z_ZoneFunction);
+                //Debug.Log("Cannot display zones type of: " + zoneData.z_ZoneFunction);
             }
         }
     }

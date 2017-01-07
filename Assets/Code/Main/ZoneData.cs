@@ -20,7 +20,7 @@ public class ZoneData {
         z_ZoneType = new ZoneType(); //This is automatically set to unspecified.
     }
 
-    #region --- [Private Functionality] ---
+    #region --- [Private, WorldGen Functionality] ---
     //Stuff here is only needed for world-gen and is not saved in any save-data file.
     private Dictionary<ZoneType, float> conversionPercentages; //During world-gen, this is the conversion progress to the zone specified.
     private bool justSet = false; //This boolean prevents the zoneType from spreading at each step.
