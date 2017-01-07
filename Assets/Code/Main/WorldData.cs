@@ -15,50 +15,12 @@ public class WorldData {
         /* Generates a new world and fills the w_Zones property.
          */
         float uniqueZoneChance = 0.75f; //Make this a function parameter later --- (To Add)
-        // Create a 2D Array of blank zones:
+        // Create a 2D Array of blank zones, initialize starting points for each zoneType:
         ZoneData[,] newWorldZones = new ZoneData[length, width];
-        for (int yIndex = 0; yIndex < width; yIndex++) {
-            for (int xIndex = 0; xIndex < length; xIndex++) {
-                newWorldZones[yIndex, xIndex] = new ZoneData(new Vector2(xIndex, yIndex));
-            }
-        }
-        
-        // Pick random starting points for each zone type:
-        foreach (ZoneType currentType in zoneTypes.zoneTypes) {
-            Vector2 chosenPoint = pickRandomUnchosenPoint(newWorldZones);
-            newWorldZones[(int)chosenPoint.x, (int)chosenPoint.y].z_ZoneType = currentType;
-            Debug.Log("Zone at " + chosenPoint + " is of type " + currentType.name);
-        }
+        newWorldZones = initZones(newWorldZones, zoneTypes);
 
         //Grow each zone type until no more moves can be made:
-        int zonesFinished = zoneTypes.zoneTypes.Count;
-        Vector2[] adjacentArray = new Vector2[8] { new Vector2(0, 1), new Vector2(0, -1), new Vector2(1, 0), new Vector2(1, 1), new Vector2(1, -1), new Vector2(-1, 0), new Vector2(-1, 1), new Vector2 (-1, -1) };
-        while (zonesFinished < length*width) {
-            for (int yIndex = 0; yIndex < width; yIndex++) {
-                for (int xIndex = 0; xIndex < length; xIndex++) {
-                    //For every zone in our newWorldZones array.
-                    if (newWorldZones[yIndex, xIndex].z_ZoneType.name != "Unspecified") { //If the zonetype has been set.
-                        //Check all adjacent tiles and spread to them with priority zoneType.Priority if possible.
-                        foreach (Vector2 adjacentTilePos in adjacentArray) {
-                            try {
-                                if (newWorldZones[(int)yIndex + (int)adjacentTilePos.x, (int)xIndex + (int)adjacentTilePos.y].isJustSet()) {
-                                    newWorldZones[(int)yIndex + (int)adjacentTilePos.x, (int)xIndex + (int)adjacentTilePos.y].unJustSet();
-                                    continue;
-                                }
-                                if (!newWorldZones[(int)yIndex + (int)adjacentTilePos.x, (int)xIndex + (int)adjacentTilePos.y].alreadySet()) {
-                                    if (newWorldZones[(int)yIndex + (int)adjacentTilePos.x, (int)xIndex + (int)adjacentTilePos.y].setConversionPercentage(newWorldZones[yIndex, xIndex].z_ZoneType)) {
-                                        zonesFinished += 1; // A new zone has been finished
-                                    }
-                                }
-                            }
-                            catch (System.IndexOutOfRangeException) {
-                                continue;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        newWorldZones = growZones(newWorldZones, zoneTypes);
 
         //Apply a randomized cutting of zones at the edges of the world to create a continental look:
         newWorldZones = applyContinentFilter(newWorldZones, 1, 0.5f);
@@ -67,7 +29,6 @@ public class WorldData {
         newWorldZones = assignMandatoryZones(newWorldZones, mandatoryZoneLibrary);
 
         //Fill in the rest of the Zones with FillerZones or UniqueZones based on their ZoneType while assigning their prefabIndex. Finally, convert to a 1D list and update our own w_Zones:
-        Debug.Log("Only Filler Zone PrefabIndex Linking Implemented");
         List<ZoneData> processedZoneList = new List<ZoneData>();
         Dictionary<ZoneType, List<int>> uniqueIndexPool = new Dictionary<ZoneType, List<int>>();
         //Initialize our prefabIndex-by-zoneType pool:
@@ -121,6 +82,53 @@ public class WorldData {
     }
 
     #region --- [World-Gen Functions] ---
+    private ZoneData[,] initZones (ZoneData[,] zdArray, ZoneTypesList zoneTypes) {
+        ZoneData[,] processedZDArray = zdArray;
+        for (int yIndex = 0; yIndex < zdArray.GetLength(0); yIndex++) {
+            for (int xIndex = 0; xIndex < zdArray.GetLength(1); xIndex++) {
+                processedZDArray[yIndex, xIndex] = new ZoneData(new Vector2(xIndex, yIndex));
+            }
+        }
+
+        // Pick random starting points for each zone type:
+        foreach (ZoneType currentType in zoneTypes.zoneTypes) {
+            Vector2 chosenPoint = pickRandomUnchosenPoint(processedZDArray);
+            processedZDArray[(int)chosenPoint.x, (int)chosenPoint.y].z_ZoneType = currentType;
+        }
+        return processedZDArray;
+    }
+    private ZoneData[,] growZones (ZoneData[,] zdArray, ZoneTypesList zoneTypes) {
+        ZoneData[,] processedZDArray = zdArray;
+        int zonesFinished = zoneTypes.zoneTypes.Count;
+        Vector2[] adjacentArray = new Vector2[8] { new Vector2(0, 1), new Vector2(0, -1), new Vector2(1, 0), new Vector2(1, 1), new Vector2(1, -1), new Vector2(-1, 0), new Vector2(-1, 1), new Vector2(-1, -1) };
+        while (zonesFinished < zdArray.GetLength(0) * zdArray.GetLength(1)) {
+            for (int yIndex = 0; yIndex < zdArray.GetLength(0); yIndex++) {
+                for (int xIndex = 0; xIndex < zdArray.GetLength(1); xIndex++) {
+                    //For every zone in our newWorldZones array.
+                    if (processedZDArray[yIndex, xIndex].z_ZoneType.name != "Unspecified") { //If the zonetype has been set.
+                        //Check all adjacent tiles and spread to them with priority zoneType.Priority if possible.
+                        foreach (Vector2 adjacentTilePos in adjacentArray) {
+                            try {
+                                if (processedZDArray[(int)yIndex + (int)adjacentTilePos.x, (int)xIndex + (int)adjacentTilePos.y].isJustSet()) {
+                                    processedZDArray[(int)yIndex + (int)adjacentTilePos.x, (int)xIndex + (int)adjacentTilePos.y].unJustSet();
+                                    continue;
+                                }
+                                if (!processedZDArray[(int)yIndex + (int)adjacentTilePos.x, (int)xIndex + (int)adjacentTilePos.y].alreadySet()) {
+                                    if (processedZDArray[(int)yIndex + (int)adjacentTilePos.x, (int)xIndex + (int)adjacentTilePos.y].setConversionPercentage(processedZDArray[yIndex, xIndex].z_ZoneType)) {
+                                        zonesFinished += 1; // A new zone has been finished
+                                    }
+                                }
+                            }
+                            catch (System.IndexOutOfRangeException) {
+                                continue;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return processedZDArray;
+    }
     private ZoneData[,] assignMandatoryZones (ZoneData[,] zdArray, Dictionary<ZoneType, ZoneList> mandatoryZoneLib) {
         /* Ensures that every mandatory zone is assigned to a unique tile.
          * Zone positions of a matching zonetype are chosen first.
@@ -165,7 +173,6 @@ public class WorldData {
 
         return processedZDArray;
     }
-
     private ZoneData[,] applyContinentFilter (ZoneData[,] zdArray, int iterations, float strength) {
         int currentIterations = 0;
         ZoneData[,] processedZDArray = zdArray;
@@ -179,7 +186,6 @@ public class WorldData {
                 }
             }
             foreach (Vector2 zDataPos in toFilter) {
-                Debug.Log("Filtering " + zDataPos);
                 if (strength >= Random.value) {
                     processedZDArray[(int)zDataPos.x, (int)zDataPos.y].z_ZoneFunction = ZoneFunction.Empty;
                 }
@@ -248,7 +254,6 @@ public class WorldData {
         }
         return new Vector2(-1, -1);
     }
-
     private Vector2 pickRandomUnchosenPoint (ZoneData[,] zones) {
         var chosen = false;
         Vector2 randomVector = Vector2.zero;
