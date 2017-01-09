@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ExampleImplementation : MonoBehaviour {
     /* This is an example implementation of the code structures found in "Assets/Code/".
@@ -14,6 +16,8 @@ public class ExampleImplementation : MonoBehaviour {
     private ZoneTypesList zoneTypesList;
     [SerializeField]
     private float zoneTileSize = 1.0f; //Assuming the tile is a square, this is the length or width between tiles.
+    [SerializeField]
+    private ProgressBar progressBar; 
 
     // --- [Cached Zone Prefab References] ---
     private Dictionary<ZoneType, ZoneList> mandatoryZoneList;
@@ -35,7 +39,7 @@ public class ExampleImplementation : MonoBehaviour {
 
     #region --- [Button Event Receivers] ---
     public void OnButton_GenerateWorld () {
-        GenerateWorld();
+        StartCoroutine(GenerateWorld());
     }
     public void OnButton_LoadWorld () {
         throw new System.NotImplementedException();
@@ -51,11 +55,9 @@ public class ExampleImplementation : MonoBehaviour {
     #endregion
 
     #region --- [Main Example Functionality] ---
-    private void GenerateWorld () {
-        WorldData newWorldData = new WorldData();
-        newWorldData.Generate(zoneTypesList, mandatoryZoneList, fillerZoneList, uniqueZoneList);
-
-        currentWorldData = newWorldData;
+    private IEnumerator GenerateWorld () {
+        yield return WorldManager.GenerateWorld(zoneTypesList, mandatoryZoneList, fillerZoneList, uniqueZoneList, progressBar);
+        currentWorldData = WorldManager.getWorld();
         DisplayWorld();
     }
 
