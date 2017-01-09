@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ public class ExampleImplementation : MonoBehaviour {
     [SerializeField]
     private float zoneTileSize = 1.0f; //Assuming the tile is a square, this is the length or width between tiles.
     [SerializeField]
-    private Image progressBar; 
+    private ProgressBar progressBar; 
 
     // --- [Cached Zone Prefab References] ---
     private Dictionary<ZoneType, ZoneList> mandatoryZoneList;
@@ -38,7 +39,7 @@ public class ExampleImplementation : MonoBehaviour {
 
     #region --- [Button Event Receivers] ---
     public void OnButton_GenerateWorld () {
-        GenerateWorld();
+        StartCoroutine(GenerateWorld());
     }
     public void OnButton_LoadWorld () {
         throw new System.NotImplementedException();
@@ -54,17 +55,9 @@ public class ExampleImplementation : MonoBehaviour {
     #endregion
 
     #region --- [Main Example Functionality] ---
-    private void GenerateWorld () {
-        if (progressBar) {
-            progressBar.gameObject.SetActive(true);
-        }
-        WorldData newWorldData = new WorldData();
-        newWorldData.Generate(zoneTypesList, mandatoryZoneList, fillerZoneList, uniqueZoneList);
-
-        currentWorldData = newWorldData;
-        if (progressBar) {
-            progressBar.gameObject.SetActive(false);
-        }
+    private IEnumerator GenerateWorld () {
+        yield return WorldManager.GenerateWorld(zoneTypesList, mandatoryZoneList, fillerZoneList, uniqueZoneList, progressBar);
+        currentWorldData = WorldManager.getWorld();
         DisplayWorld();
     }
 
