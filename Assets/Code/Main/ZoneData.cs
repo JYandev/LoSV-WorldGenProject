@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public enum ZoneFunction { Unset, Empty, Filler, Mandatory, Unique}
 
 [System.Serializable]
@@ -14,8 +15,8 @@ public class ZoneData {
     public ZoneFunction z_ZoneFunction;
     public Vector2 z_ZonePosition;
 
-    public ZoneData (Vector2 zonePos) {
-        z_ZonePosition = zonePos;
+    public ZoneData () {
+        z_ZonePosition = Vector2.zero;
         z_ZoneFunction = ZoneFunction.Unset;
         z_ZoneType = new ZoneType(); //This is automatically set to unspecified.
     }

@@ -81,7 +81,8 @@ public class WorldManager : Singleton<WorldManager> {
         ZoneData[,] processedZDArray = zdArray;
         for (int yIndex = 0; yIndex < zdArray.GetLength(0); yIndex++) {
             for (int xIndex = 0; xIndex < zdArray.GetLength(1); xIndex++) {
-                processedZDArray[yIndex, xIndex] = new ZoneData(new Vector2(xIndex, yIndex));
+                processedZDArray[yIndex, xIndex] = new ZoneData();
+                processedZDArray[yIndex, xIndex].z_ZonePosition = new Vector2(xIndex, yIndex);
                 subProgress += 0.5f * (1.0f / (zdArray.GetLength(0) * zdArray.GetLength(1)));
                 updateProgress(subProgress, 0);
                 yield return new WaitForEndOfFrame();
