@@ -18,4 +18,17 @@ public class ZoneType {
      */
     public string name = "Unspecified"; //Unspecified by default. This is so that we can determine which zones have been iterated over during world-gen.
     public float priority = 0.5f; //ZoneType's Priority.
+
+    public override bool Equals (object obj) {
+        if (obj == null || !(obj is ZoneType)) {
+            return false;
+        }
+        else {
+            return this.name == ((ZoneType)obj).name;
+        }
+    }
+
+    public override int GetHashCode () {
+        return this.name.GetHashCode();
+    }
 }

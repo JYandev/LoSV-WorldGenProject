@@ -46,7 +46,7 @@ public class ExampleImplementation : MonoBehaviour {
     }
     public void OnButton_SaveWorld () {
         if (currentWorldData != null) {
-            string newPath = UnityEditor.EditorUtility.SaveFilePanel("Open WorldData .JSON file", Application.dataPath, "World", "JSON"); //Only works in editor.
+            string newPath = UnityEditor.EditorUtility.SaveFilePanel("Save World to .JSON file", Application.dataPath, "World", "JSON"); //Only works in editor.
             string data = JsonWriter.Serialize(currentWorldData);
             StreamWriter streamWriter = new StreamWriter(newPath);
             streamWriter.Write(data);
@@ -57,7 +57,12 @@ public class ExampleImplementation : MonoBehaviour {
         }
     }
     public void OnButton_LoadWorld () {
-        throw new System.NotImplementedException();
+        string newPath = UnityEditor.EditorUtility.OpenFilePanel("Open WorldData .JSON file", Application.dataPath, "JSON"); //Only works in editor.
+        StreamReader streamReader = new StreamReader(newPath);
+        string data = streamReader.ReadToEnd();
+        streamReader.Close();
+        currentWorldData = JsonReader.Deserialize<WorldData>(data);
+        DisplayWorld();
     }
     #endregion
 
