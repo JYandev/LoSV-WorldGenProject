@@ -17,7 +17,9 @@ public class ExampleImplementation : MonoBehaviour {
     [SerializeField]
     private float zoneTileSize = 1.0f; //Assuming the tile is a square, this is the length or width between tiles.
     [SerializeField]
-    private ProgressBar progressBar; 
+    private ProgressBar progressBar;
+    [SerializeField]
+    private Transform tileContainer;
 
     // --- [Cached Zone Prefab References] ---
     private Dictionary<ZoneType, ZoneList> mandatoryZoneList;
@@ -62,15 +64,21 @@ public class ExampleImplementation : MonoBehaviour {
     }
 
     private void DisplayWorld () {
+        if (tileContainer.childCount > 0) {
+            foreach (Transform child in tileContainer) {
+                Destroy(child.gameObject); //Cleanup any old tiles.
+            }
+        }
+
         foreach (ZoneData zoneData in currentWorldData.w_Zones) {
             if (zoneData.z_ZoneFunction == ZoneFunction.Filler) {
-                Instantiate(fillerZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity);
+                Instantiate(fillerZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity, tileContainer);
             }
             else if (zoneData.z_ZoneFunction == ZoneFunction.Mandatory) {
-                Instantiate(mandatoryZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity);
+                Instantiate(mandatoryZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity, tileContainer);
             }
             else if (zoneData.z_ZoneFunction == ZoneFunction.Unique) {
-                Instantiate(uniqueZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity);
+                Instantiate(uniqueZoneList[zoneData.z_ZoneType].zonePrefabList[zoneData.z_ZonePrefabIndex], new Vector3(zoneData.z_ZonePosition.x * zoneTileSize, 0, zoneData.z_ZonePosition.y * zoneTileSize), Quaternion.identity, tileContainer);
             }
             else {
                 //Debug.Log("Cannot display zones type of: " + zoneData.z_ZoneFunction);
