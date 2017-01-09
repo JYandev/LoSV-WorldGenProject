@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using Pathfinding.Serialization.JsonFx;
+using System.IO;
 
 public class ExampleImplementation : MonoBehaviour {
     /* This is an example implementation of the code structures found in "Assets/Code/".
@@ -42,6 +43,18 @@ public class ExampleImplementation : MonoBehaviour {
     #region --- [Button Event Receivers] ---
     public void OnButton_GenerateWorld () {
         StartCoroutine(GenerateWorld());
+    }
+    public void OnButton_SaveWorld () {
+        if (currentWorldData != null) {
+            string newPath = UnityEditor.EditorUtility.SaveFilePanel("Open WorldData .JSON file", Application.dataPath, "World", "JSON"); //Only works in editor.
+            string data = JsonWriter.Serialize(currentWorldData);
+            StreamWriter streamWriter = new StreamWriter(newPath);
+            streamWriter.Write(data);
+            streamWriter.Close();
+        }
+        else {
+            throw new System.Exception("World must be generated in order to save");
+        }
     }
     public void OnButton_LoadWorld () {
         throw new System.NotImplementedException();
